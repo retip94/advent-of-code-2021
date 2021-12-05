@@ -14,4 +14,8 @@ defmodule D2Test do
   test "part1/1", %{input: input} do
     assert 150 == D2.part1(input)
   end
+
+  test "part2/1", %{input: input} do
+    assert 900 == D2.part2(input)
+  end
 end
