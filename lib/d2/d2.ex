@@ -5,18 +5,16 @@ defmodule D2 do
     up X decreases the depth by X units.
   """
   def part1(steps \\ input()) do
-    coordinates =
-      steps
-      |> parse_input()
-      |> Enum.reduce(%{horizontal: 0, depth: 0}, fn step, acc ->
-        case step do
-          {"forward", x} -> %{horizontal: acc.horizontal + x, depth: acc.depth}
-          {"up", x} -> %{horizontal: acc.horizontal, depth: acc.depth - x}
-          {"down", x} -> %{horizontal: acc.horizontal, depth: acc.depth + x}
-        end
-      end)
-
-    coordinates.depth * coordinates.horizontal
+    steps
+    |> parse_input()
+    |> Enum.reduce(%{horizontal: 0, depth: 0}, fn step, acc ->
+      case step do
+        {"forward", x} -> %{horizontal: acc.horizontal + x, depth: acc.depth}
+        {"up", x} -> %{horizontal: acc.horizontal, depth: acc.depth - x}
+        {"down", x} -> %{horizontal: acc.horizontal, depth: acc.depth + x}
+      end
+    end)
+    |> then(fn x -> x.depth * x.horizontal end)
   end
 
   @doc """
@@ -27,18 +25,16 @@ defmodule D2 do
       It increases your depth by your aim multiplied by X
   """
   def part2(steps \\ input()) do
-    coordinates =
-      steps
-      |> parse_input()
-      |> Enum.reduce(%{horizontal: 0, depth: 0, aim: 0}, fn step, acc ->
-        case step do
-          {"forward", x} -> %{horizontal: acc.horizontal + x, depth: acc.depth + (acc.aim * x), aim: acc.aim}
-          {"up", x} -> %{horizontal: acc.horizontal, depth: acc.depth, aim: acc.aim - x}
-          {"down", x} -> %{horizontal: acc.horizontal, depth: acc.depth, aim: acc.aim + x}
-        end
-      end)
-
-      coordinates.depth * coordinates.horizontal
+    steps
+    |> parse_input()
+    |> Enum.reduce(%{horizontal: 0, depth: 0, aim: 0}, fn step, acc ->
+      case step do
+        {"forward", x} -> %{horizontal: acc.horizontal + x, depth: acc.depth + (acc.aim * x), aim: acc.aim}
+        {"up", x} -> %{horizontal: acc.horizontal, depth: acc.depth, aim: acc.aim - x}
+        {"down", x} -> %{horizontal: acc.horizontal, depth: acc.depth, aim: acc.aim + x}
+      end
+    end)
+    |> then(fn x -> x.depth * x.horizontal end)
   end
 
   defp input, do: File.read!(__DIR__ <> "/input.txt")
