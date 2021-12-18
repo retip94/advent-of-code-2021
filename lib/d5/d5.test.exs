@@ -20,7 +20,7 @@ defmodule D5Test do
     assert 5 == D5.part1(input)
   end
 
-  # test "part2/1", %{input: input} do
-  #   assert 1924 == D4.part2(input)
-  # end
+  test "part2/1", %{input: input} do
+    assert 12 == D5.part2(input)
+  end
 end
