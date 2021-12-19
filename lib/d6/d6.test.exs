@@ -26,12 +26,4 @@ defmodule D6Test do
   test "part2/1111" do
     assert 8 = D6.part2("3", 24)
   end
-
-  test "get_childern" do
-    assert 4 == D6.get_children(18, 3)
-  end
-
-  test "get_children for new child" do
-    assert 3 == D6.get_children(20)
-  end
 end

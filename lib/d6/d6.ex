@@ -24,16 +24,14 @@ defmodule D6 do
     |> Enum.map(fn f -> if f == 0 do 7 else f end end)
   end
 
+  # When added caching, solving time of part2 decreased from fucking a lot to <1s
   def part2(input \\ input(), days \\ 256) do
+    :ets.new(:cache, [])
     start_fish = parse_input(input)
-    i = 1
     Enum.count(start_fish) + Enum.sum(Enum.map(start_fish, fn f ->
-      i = i + 1
-      IO.inspect("#{i} of #{length(start_fish)}")
       get_children(days, f)
     end))
   end
-
 
   def get_children(days_left, next_child \\ 9)
 
@@ -46,12 +44,19 @@ defmodule D6 do
   end
 
   def get_children(days_left, next_child) do
-    first_child = days_left - next_child
-    children =
-      Enum.reduce(1..div(first_child - 1, 7), [first_child], fn i, acc ->
-        acc ++ [first_child - (i * 7)]
-      end)
-    Enum.count(children) + Enum.sum(Enum.map(children, fn c -> get_children(c) end))
+    case :ets.lookup(:cache, {days_left, next_child}) do
+      [] ->
+        first_child = days_left - next_child
+        children =
+          Enum.reduce(1..div(first_child - 1, 7), [first_child], fn i, acc ->
+            acc ++ [first_child - (i * 7)]
+          end)
+        amount = Enum.count(children) + Enum.sum(Enum.map(children, fn c -> get_children(c) end))
+        :ets.insert(:cache, {{days_left, next_child}, amount})
+        amount
+      [{_cache_key, amount}] ->
+        amount
+    end
   end
 
   defp input, do: File.read!(__DIR__ <> "/input.txt")
