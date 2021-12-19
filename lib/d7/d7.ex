@@ -3,9 +3,10 @@ defmodule D7 do
   def part1(positions \\ input()) do
     positions = parse_input(positions)
     last_position = Enum.max(positions)
-    fuel_for_last = get_needed_fuel(positions, last_position)
-    0..last_position
-    |> Enum.reduce_while(fuel_for_last, fn meeting, acc ->
+    fuel_for_first = get_needed_fuel(positions, 0)
+    1..last_position
+    # Iterate while needed_fuel amount is decreasing
+    |> Enum.reduce_while(fuel_for_first, fn meeting, acc ->
       needed_fuel = get_needed_fuel(positions, meeting)
       case needed_fuel < acc do
          true ->
@@ -26,9 +27,10 @@ defmodule D7 do
   def part2(positions \\ input()) do
     positions = parse_input(positions)
     last_position = Enum.max(positions)
-    fuel_for_last = get_needed_fuel_p2(positions, last_position)
-    0..last_position
-    |> Enum.reduce_while(fuel_for_last, fn meeting, acc ->
+    fuel_for_first = get_needed_fuel_p2(positions, 0)
+    1..last_position
+    # Iterate while needed_fuel amount is decreasing
+    |> Enum.reduce_while(fuel_for_first, fn meeting, acc ->
       needed_fuel = get_needed_fuel_p2(positions, meeting)
       case needed_fuel < acc do
          true ->
